@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-The dev server binds to `0.0.0.0:4327`.
+The dev server listens on port 4327 on all interfaces, including IPv4 and IPv6.
 
 ```bash
 npm run build

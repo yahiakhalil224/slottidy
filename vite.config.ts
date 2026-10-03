@@ -26,7 +26,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: "0.0.0.0",
+    host: "::",
     port: 4327,
     strictPort: true,
     allowedHosts: true,
