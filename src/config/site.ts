@@ -2,11 +2,11 @@ const brand = "Slotidy"
 
 export const site = {
   brand,
-  calendlyLink: "[CALENDLY_LINK]",
+  calendlyLink: "https://calendly.com/yahiakhalil224",
   demoAudioUrl: "[DEMO_AUDIO_URL]",
-  contactEmail: "[CONTACT_EMAIL]",
+  contactEmail: "yahiakhalil224@gmail.com",
   founderPhoto: "[FOUNDER_PHOTO]",
-  linkedinUrl: "[LINKEDIN_URL]",
+  linkedinUrl: "https://www.linkedin.com/in/dr-yahia-khalil-975b65281/",
   companyDetails: "[COMPANY_DETAILS]",
   canonical: "[CANONICAL_URL]",
   description: `${brand} sets up done-for-you AI voice receptionists that answer every call 24/7, book appointments into your calendar and send SMS reminders. Built for dental and chiropractic clinics in the UK & US.`,
