@@ -216,7 +216,7 @@ function SophieCall() {
           )}
         </Magnetic>
 
-        <div className="flex h-14 min-w-0 flex-1 items-end gap-[3px]" aria-hidden="true">
+        <div className="flex h-14 w-full min-w-0 items-end gap-[3px] sm:w-auto sm:flex-1" aria-hidden="true">
           {waveform.map((height, index) => (
             <span
               key={`${height}-${index}`}
