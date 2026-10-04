@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from "react"
-import { Pause, Play } from "lucide-react"
 import { motion } from "framer-motion"
+import { RetellWebClient } from "retell-client-js-sdk"
 import { GlassCard } from "@/components/glass-card"
 import { Magnetic } from "@/components/magnetic"
 import { Reveal } from "@/components/reveal"
 import { SectionHeading } from "@/components/section-heading"
 import { Button } from "@/components/ui/button"
-import { Toggle } from "@/components/ui/toggle"
-import { site } from "@/config/site"
-import { formatClock } from "@/lib/estimate"
 import { EASE, useReducedMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
@@ -31,50 +28,244 @@ const transcript = [
   { t: 41, speaker: "caller", text: "No, that's perfect, thanks!" },
 ] as const
 
+const microphoneBlocked =
+  "Your microphone is blocked. Allow access in your browser, then try again."
+const microphoneMissing =
+  "We couldn't find a microphone. Check it's connected, then try again."
+const callFailed = "We couldn't start the call. Please try again in a moment."
+
+type CallStatus = "idle" | "connecting" | "live" | "ended"
+
 function stamp(seconds: number) {
   const minutes = Math.floor(seconds / 60)
   const remain = seconds % 60
   return `${minutes.toString().padStart(2, "0")}:${remain.toString().padStart(2, "0")}`
 }
 
-export default function Demo() {
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const reduced = useReducedMotion()
-  const [playing, setPlaying] = useState(false)
-  const [time, setTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [rate, setRate] = useState<1 | 1.5>(1)
-  const [failed, setFailed] = useState(false)
+function errorName(error: unknown) {
+  if (typeof error !== "object" || error === null || !("name" in error)) return ""
+  return typeof error.name === "string" ? error.name : ""
+}
 
-  const placeholder = site.demoAudioUrl.startsWith("[")
-  const progress = duration > 0 ? Math.min(1, time / duration) : 0
-  const activeIndex = transcript.reduce((current, line, index) => (time >= line.t ? index : current), -1)
+function isMicrophoneBlocked(error: unknown) {
+  const name = errorName(error)
+  if (name === "NotAllowedError" || name === "PermissionDeniedError" || name === "SecurityError") {
+    return true
+  }
+  const message = error instanceof Error ? error.message : typeof error === "string" ? error : ""
+  return /notallowederror|permission denied/i.test(message)
+}
+
+function isMicrophoneMissing(error: unknown) {
+  const name = errorName(error)
+  return name === "NotFoundError" || name === "DevicesNotFoundError"
+}
+
+function friendlyError(error: unknown) {
+  if (isMicrophoneBlocked(error)) return microphoneBlocked
+  if (isMicrophoneMissing(error)) return microphoneMissing
+  return callFailed
+}
+
+async function ensureMicrophone() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    throw new DOMException("Microphone is blocked", "NotAllowedError")
+  }
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+  for (const track of stream.getTracks()) track.stop()
+}
+
+async function fetchAccessToken() {
+  const response = await fetch("/api/create-web-call", { method: "POST" })
+  const payload: unknown = await response.json().catch(() => null)
+  const token =
+    typeof payload === "object" &&
+    payload !== null &&
+    "access_token" in payload &&
+    typeof payload.access_token === "string"
+      ? payload.access_token
+      : ""
+  if (!response.ok || token.length === 0) {
+    throw new Error("unavailable")
+  }
+  return token
+}
+
+function statusLabel(status: CallStatus, error: string | null) {
+  if (status === "connecting") return "Connecting…"
+  if (status === "live") return "Live"
+  if (status === "ended") return "Call ended"
+  if (error) return ""
+  return "Ready"
+}
+
+function SophieCall() {
+  const reduced = useReducedMotion()
+  const clientRef = useRef<RetellWebClient | null>(null)
+  const generation = useRef(0)
+  const attempt = useRef(0)
+  const outcome = useRef<"pending" | "live" | "error">("pending")
+  const [status, setStatus] = useState<CallStatus>("idle")
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-    audio.playbackRate = rate
-  }, [rate])
+    const client = new RetellWebClient()
+    clientRef.current = client
 
-  function togglePlay() {
-    const audio = audioRef.current
-    if (!audio || failed || placeholder) {
-      setFailed(true)
-      return
+    const current = () => attempt.current === generation.current
+
+    client.on("call_started", () => {
+      if (!current()) return
+      outcome.current = "live"
+      setError(null)
+      setStatus("live")
+    })
+    client.on("call_ended", () => {
+      if (!current()) return
+      setStatus("ended")
+    })
+    client.on("error", (message: unknown) => {
+      if (!current()) return
+      outcome.current = "error"
+      setError(friendlyError(message))
+      setStatus((currentStatus) => (currentStatus === "live" ? "ended" : "idle"))
+    })
+
+    return () => {
+      generation.current += 1
+      client.stopCall()
+      client.removeAllListeners()
+      clientRef.current = null
     }
-    if (audio.paused) {
-      void audio.play().catch(() => setFailed(true))
-    } else {
-      audio.pause()
+  }, [])
+
+  async function startCall() {
+    const client = clientRef.current
+    if (!client || status === "connecting" || status === "live") return
+
+    const id = generation.current + 1
+    generation.current = id
+    attempt.current = id
+    outcome.current = "pending"
+    setError(null)
+    setStatus("connecting")
+
+    try {
+      await ensureMicrophone()
+      if (generation.current !== id) return
+      const accessToken = await fetchAccessToken()
+      if (generation.current !== id) return
+      await client.startCall({ accessToken })
+      if (generation.current !== id) {
+        client.stopCall()
+        return
+      }
+      if (outcome.current === "pending") {
+        setError(callFailed)
+        setStatus("idle")
+      }
+    } catch (caught) {
+      if (generation.current !== id) return
+      outcome.current = "error"
+      setError(friendlyError(caught))
+      setStatus("idle")
+      client.stopCall()
     }
   }
 
-  function seek(value: number) {
-    const audio = audioRef.current
-    if (!audio || failed || !Number.isFinite(duration) || duration <= 0) return
-    audio.currentTime = value
-    setTime(value)
+  function endCall() {
+    generation.current += 1
+    clientRef.current?.stopCall()
+    setError(null)
+    setStatus("ended")
   }
+
+  const label = statusLabel(status, error)
+  const live = status === "live"
+
+  return (
+    <GlassCard lift={false} className="p-5 sm:p-7">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+        <Magnetic className="w-full sm:w-auto">
+          {live ? (
+            <Button
+              type="button"
+              onClick={endCall}
+              variant="outline"
+              className="h-12 w-full rounded-full border-hairline bg-white px-6 text-[15px] font-medium text-ink hover:bg-white sm:w-auto"
+            >
+              End call
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              onClick={() => void startCall()}
+              disabled={status === "connecting"}
+              aria-describedby="sophie-demo-note"
+              aria-busy={status === "connecting"}
+              className="h-auto min-h-12 w-full whitespace-normal rounded-full bg-ink px-6 py-3 text-center text-[15px] font-medium tracking-[-0.01em] text-white shadow-none hover:bg-ink/90 sm:w-auto"
+            >
+              {status === "connecting" ? "Connecting…" : "Talk to Sophie, our AI receptionist"}
+              {status === "connecting" ? null : (
+                <span
+                  aria-hidden="true"
+                  className="ml-1 size-2 shrink-0 rounded-full bg-brand transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:scale-150"
+                />
+              )}
+            </Button>
+          )}
+        </Magnetic>
+
+        <div className="flex h-14 min-w-0 flex-1 items-end gap-[3px]" aria-hidden="true">
+          {waveform.map((height, index) => (
+            <span
+              key={`${height}-${index}`}
+              className={cn(
+                "w-[3px] flex-1 origin-bottom rounded-full",
+                live ? "bg-brand wave-bar" : "bg-ink/15",
+              )}
+              style={{
+                height: `${Math.max(12, height * 100)}%`,
+                animationDelay: live && !reduced ? `${(index % 8) * 0.12}s` : undefined,
+              }}
+            />
+          ))}
+        </div>
+
+        <p
+          className="font-mono text-sm text-muted-ink sm:min-w-28 sm:text-right"
+          role="status"
+          aria-live="polite"
+        >
+          {live ? (
+            <span className="inline-flex items-center gap-2 sm:justify-end">
+              <span
+                className="size-1.5 rounded-full bg-brand"
+                style={reduced ? undefined : { animation: "live-dot 1.6s ease-in-out infinite" }}
+              />
+              Live
+            </span>
+          ) : (
+            label || "\u00a0"
+          )}
+        </p>
+      </div>
+
+      {error ? (
+        <p className="mt-4 text-sm text-muted-ink" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <p id="sophie-demo-note" className="mt-4 text-sm text-muted-ink">
+        Live demo for a fictional clinic, Bright Smile Dental. Uses your microphone.
+      </p>
+    </GlassCard>
+  )
+}
+
+export default function Demo() {
+  const reduced = useReducedMotion()
 
   return (
     <section id="demo" aria-labelledby="demo-title" className="section-space bg-canvas">
@@ -84,103 +275,16 @@ export default function Demo() {
             eyebrow="Demo"
             id="demo-title"
             title="Don't take our word for it. Listen."
-            intro="This is a demo call recorded for a sample dental clinic. It's not a real patient, just an example of how your AI receptionist could sound."
+            intro="Talk to Sophie, or read a sample call for a fictional dental clinic. It's not a real patient, just an example of how your AI receptionist could sound."
           />
         </Reveal>
 
         <Reveal className="mt-10">
-          <GlassCard lift={false} className="p-5 sm:p-7">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-              <Magnetic>
-                <Button
-                  type="button"
-                  onClick={togglePlay}
-                  aria-pressed={playing}
-                  className="size-14 rounded-full bg-ink text-white hover:bg-ink/90"
-                  aria-label={playing ? "Pause demo" : "Play demo"}
-                >
-                  {playing ? <Pause strokeWidth={1.5} /> : <Play className="ml-0.5" strokeWidth={1.5} />}
-                  <span className="size-2 rounded-full bg-brand transition-transform duration-300 group-hover/button:scale-150" />
-                </Button>
-              </Magnetic>
-
-              <div className="relative min-w-0 flex-1">
-                <div className="flex h-14 items-end gap-[3px]" aria-hidden="true">
-                  {waveform.map((height, index) => {
-                    const filled = progress > 0 && index / waveform.length <= progress
-                    return (
-                      <span
-                        key={`${height}-${index}`}
-                        className={cn(
-                          "w-[3px] flex-1 origin-bottom rounded-full",
-                          filled ? "bg-brand" : "bg-ink/15",
-                        )}
-                        style={{ height: `${Math.max(12, height * 100)}%` }}
-                      />
-                    )
-                  })}
-                </div>
-                <input
-                  type="range"
-                  min={0}
-                  max={duration || 0}
-                  step={0.1}
-                  value={Math.min(time, duration || 0)}
-                  onChange={(event) => seek(Number(event.target.value))}
-                  disabled={failed || placeholder || duration <= 0}
-                  aria-label="Seek demo audio"
-                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
-                />
-              </div>
-
-              <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
-                <p className="font-mono text-sm text-muted-ink tabular-nums">
-                  {formatClock(time)} / {formatClock(duration)}
-                </p>
-                <div className="flex gap-1" role="group" aria-label="Playback speed">
-                  <Toggle
-                    pressed={rate === 1}
-                    onPressedChange={() => setRate(1)}
-                    aria-label="Play at normal speed"
-                    className="rounded-full px-3 data-[state=on]:bg-ink data-[state=on]:text-white"
-                  >
-                    1x
-                  </Toggle>
-                  <Toggle
-                    pressed={rate === 1.5}
-                    onPressedChange={() => setRate(1.5)}
-                    aria-label="Play at 1.5 times speed"
-                    className="rounded-full px-3 data-[state=on]:bg-ink data-[state=on]:text-white"
-                  >
-                    1.5x
-                  </Toggle>
-                </div>
-              </div>
-            </div>
-
-            {failed || placeholder ? (
-              <p className="mt-4 text-sm text-muted-ink" role="status">
-                The sample recording will play here once it&apos;s added. The player stays ready.
-              </p>
-            ) : null}
-
-            <audio
-              ref={audioRef}
-              src={site.demoAudioUrl}
-              preload="none"
-              onPlay={() => setPlaying(true)}
-              onPause={() => setPlaying(false)}
-              onEnded={() => setPlaying(false)}
-              onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
-              onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)}
-              onError={() => setFailed(true)}
-            />
-          </GlassCard>
+          <SophieCall />
         </Reveal>
 
         <ol className="mt-8 space-y-3" aria-label="Sample transcript">
           {transcript.map((line, index) => {
-            const active = activeIndex === index && time > 0
             const caller = line.speaker === "caller"
             return (
               <motion.li
@@ -194,13 +298,11 @@ export default function Demo() {
                     ? { duration: 0.15, delay: Math.min(index * 0.02, 0.08) }
                     : { duration: 0.55, delay: index * 0.08, ease: EASE }
                 }
-                aria-current={active ? "true" : undefined}
               >
                 <div
                   className={cn(
                     "max-w-[min(100%,36rem)] rounded-[22px] px-4 py-3",
                     caller ? "bg-ink text-white" : "border border-hairline bg-white/70 backdrop-blur-xl",
-                    active && "ring-2 ring-brand-text",
                   )}
                 >
                   <p className={cn("font-mono text-[11px] tracking-wide", caller ? "text-white/60" : "text-muted-ink")}>

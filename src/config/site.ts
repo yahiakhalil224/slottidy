@@ -3,7 +3,6 @@ const brand = "Slotidy"
 export const site = {
   brand,
   calendlyLink: "https://calendly.com/yahiakhalil224",
-  demoAudioUrl: "[DEMO_AUDIO_URL]",
   contactEmail: "yahiakhalil224@gmail.com",
   founderPhoto: "[FOUNDER_PHOTO]",
   linkedinUrl: "https://www.linkedin.com/in/dr-yahia-khalil-975b65281/",
