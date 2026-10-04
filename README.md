@@ -2,7 +2,9 @@
 
 Marketing site for Slotidy, a done-for-you AI voice receptionist for dental clinics and chiropractic practices in the UK and US.
 
-The page is a single offer: book a call. Placeholders for the calendar link, demo audio, contact details and founder photo live in `src/config/site.ts`.
+The page is a single offer: book a call. Placeholders for the calendar link, contact details and founder photo live in `src/config/site.ts`.
+
+The demo section places a live call to Sophie, an AI receptionist for a fictional clinic. Set `RETELL_API_KEY` in the Vercel project environment. `api/create-web-call` uses that key on the server and returns only an access token to the browser.
 
 ## Run locally
 
@@ -23,7 +25,6 @@ npm run preview
 Replace these values in `src/config/site.ts`:
 
 - `[CALENDLY_LINK]`
-- `[DEMO_AUDIO_URL]`
 - `[CONTACT_EMAIL]`
 - `[FOUNDER_PHOTO]`
 - `[LINKEDIN_URL]`
