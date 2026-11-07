@@ -99,7 +99,7 @@ function FounderPortrait() {
       <div
         role="img"
         aria-label={`${site.founder}, founder of ${site.brand}`}
-        className="flex aspect-[4/5] items-end bg-[radial-gradient(circle_at_30%_18%,rgba(198,244,50,0.55),transparent_42%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.16),transparent_46%),linear-gradient(165deg,#0B0B0C,#0B0B0C)] p-6"
+        className="flex aspect-[4/5] items-end bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.248),transparent_42%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.16),transparent_46%),linear-gradient(165deg,#0B0B0C,#0B0B0C)] p-6"
       >
         <span className="font-heading text-6xl tracking-[-0.04em] text-white">{site.founderInitials}</span>
       </div>

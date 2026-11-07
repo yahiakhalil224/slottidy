@@ -88,11 +88,11 @@ export default function HowItWorks() {
               />
               <ol className="relative mt-8 space-y-2 pl-6">
                 <div className="absolute top-1 bottom-1 left-0 w-px bg-white/15" aria-hidden="true">
-                  <div ref={railRef} className="h-full w-px origin-top bg-brand" style={{ transform: "scaleY(0)" }} />
+                  <div ref={railRef} className="h-full w-px origin-top bg-white" style={{ transform: "scaleY(0)" }} />
                 </div>
                 {steps.map((step, index) => (
                   <li key={step.title} aria-current={active === index ? "step" : undefined} className="py-1.5">
-                    <p className="font-mono text-[12px] text-brand">0{index + 1}</p>
+                    <p className="font-mono text-[12px] text-white/60">0{index + 1}</p>
                     <h3
                       className={cn(
                         "mt-1 text-xl tracking-[-0.03em] transition-opacity",
@@ -144,7 +144,7 @@ export default function HowItWorks() {
             <ol aria-label="What happens after you book a call" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {after.map((item, index) => (
                 <li key={item} className="rounded-[24px] border border-hairline bg-white/70 p-5 backdrop-blur-xl">
-                  <p className="font-mono text-[12px] text-brand-text">0{index + 1}</p>
+                  <p className="font-mono text-[12px] text-muted-ink">0{index + 1}</p>
                   <p className="mt-3 font-heading text-lg tracking-[-0.03em]">{item}</p>
                 </li>
               ))}
@@ -172,7 +172,7 @@ function StepBlock({
         <PhoneScreen step={index} active={inView} />
       </PhoneFrame>
       <div>
-        <p className="font-mono text-[12px] text-brand">0{index + 1}</p>
+        <p className="font-mono text-[12px] text-white/60">0{index + 1}</p>
         <h3 className="mt-2 text-2xl tracking-[-0.03em]">{title}</h3>
         <p className="mt-3 max-w-md text-white/72">{body}</p>
       </div>

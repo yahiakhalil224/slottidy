@@ -7,7 +7,7 @@ export const site = {
   founderPhoto: "[FOUNDER_PHOTO]",
   linkedinUrl: "https://www.linkedin.com/in/dr-yahia-khalil-975b65281/",
   companyDetails: "[COMPANY_DETAILS]",
-  canonical: "[CANONICAL_URL]",
+  canonical: "https://slotidy.vercel.app/",
   description: `${brand} sets up done-for-you AI voice receptionists that answer every call 24/7, book appointments into your calendar and send SMS reminders. Built for dental and chiropractic clinics in the UK & US.`,
   founder: "Yahya Khalil",
   founderInitials: "YK",

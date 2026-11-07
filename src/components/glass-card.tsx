@@ -33,7 +33,7 @@ export function GlassCard({
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100"
         style={{
           background:
-            "radial-gradient(380px circle at var(--spot-x, 50%) var(--spot-y, 0%), rgba(198,244,50,0.16), transparent 42%)",
+            "radial-gradient(380px circle at var(--spot-x, 50%) var(--spot-y, 0%), rgba(11,11,12,0.05), transparent 42%)",
         }}
       />
       <div className="relative">{children}</div>

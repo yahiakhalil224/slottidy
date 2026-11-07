@@ -23,7 +23,7 @@ export default function FinalCta() {
       <motion.div
         aria-hidden="true"
         style={reduced ? undefined : { y: y1 }}
-        className="pointer-events-none absolute -top-10 left-[10%] h-[380px] w-[380px] rounded-full bg-[radial-gradient(circle,rgba(198,244,50,0.22),transparent_68%)] blur-2xl"
+        className="pointer-events-none absolute -top-10 left-[10%] h-[380px] w-[380px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.099),transparent_68%)] blur-2xl"
       />
       <motion.div
         aria-hidden="true"
@@ -32,7 +32,7 @@ export default function FinalCta() {
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(198,244,50,0.35),transparent_70%)] blur-3xl"
+        className="pointer-events-none absolute top-1/2 left-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.158),transparent_70%)] blur-3xl"
       />
 
       <div className="shell relative text-center">

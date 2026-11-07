@@ -38,7 +38,7 @@ export default function Problem() {
           {cards.map((card) => (
             <RevealItem key={card.title}>
               <GlassCard className="h-full p-6">
-                <span className="grid size-10 place-items-center rounded-full bg-brand text-ink">
+                <span className="grid size-10 place-items-center rounded-full bg-ink text-white">
                   <card.icon strokeWidth={1.5} className="size-5" aria-hidden="true" />
                 </span>
                 <h3 className="mt-5 text-xl tracking-[-0.03em] text-ink">{card.title}</h3>

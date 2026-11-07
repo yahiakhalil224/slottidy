@@ -69,7 +69,7 @@ export default function Integrations() {
 function Chip({ name, icon: Icon }: { name: string; icon: LucideIcon }) {
   return (
     <li className="flex shrink-0 items-center gap-2 rounded-full border border-hairline bg-white/70 px-4 py-2.5 text-sm text-ink backdrop-blur-xl">
-      <Icon strokeWidth={1.5} className="size-4 text-brand-text" aria-hidden="true" />
+      <Icon strokeWidth={1.5} className="size-4 text-ink" aria-hidden="true" />
       {name}
     </li>
   )

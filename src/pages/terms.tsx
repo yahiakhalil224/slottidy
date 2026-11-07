@@ -4,7 +4,7 @@ export function Terms() {
   return (
     <article className="section-space bg-canvas">
       <div className="shell max-w-3xl pt-16">
-        <p className="eyebrow text-brand-text">Terms</p>
+        <p className="eyebrow text-muted-ink">Terms</p>
         <h1 className="mt-4 text-[clamp(2.4rem,5vw,4rem)] text-ink">Terms</h1>
         <div className="mt-8 space-y-4 text-muted-ink">
           <p>

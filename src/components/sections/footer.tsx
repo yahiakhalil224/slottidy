@@ -70,7 +70,7 @@ export function Footer() {
             Terms
           </Link>
         </p>
-        <p>Demo audio and transcripts on this site are examples, not real patient calls.</p>
+        <p>The live demo and transcripts on this site use a fictional clinic, not real patient calls.</p>
       </div>
     </footer>
   )

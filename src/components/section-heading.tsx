@@ -26,7 +26,7 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <p className={cn("eyebrow mb-4", tone === "dark" ? "text-brand" : "text-brand-text")}>
+        <p className={cn("eyebrow mb-4", tone === "dark" ? "text-white/60" : "text-muted-ink")}>
           {eyebrow}
         </p>
       ) : null}

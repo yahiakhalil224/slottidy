@@ -64,7 +64,7 @@ export function MobileCta() {
         className="flex h-12 items-center justify-center rounded-full border border-hairline bg-white/75 text-sm font-medium text-ink shadow-[0_20px_60px_-20px_rgba(11,11,12,0.25)] backdrop-blur-xl"
       >
         Book a Free Call
-        <span aria-hidden="true" className="ml-2 size-2 rounded-full bg-brand" />
+        <span aria-hidden="true" className="ml-2 size-2 rounded-full bg-ink" />
       </a>
     </div>
   )

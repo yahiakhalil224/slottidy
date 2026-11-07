@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion"
-import { Play } from "lucide-react"
+import { Mic } from "lucide-react"
 import { BookCall } from "@/components/book-call"
 import { SpeechWave } from "@/components/speech-wave"
 import { Button } from "@/components/ui/button"
@@ -57,13 +57,13 @@ export function Hero() {
         y.set(0)
       }}
     >
-      <Drift className="pointer-events-none absolute -top-24 -left-16 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(198,244,50,0.2),transparent_68%)] blur-2xl" from={30} to={-70} />
+      <Drift className="pointer-events-none absolute -top-24 -left-16 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.09),transparent_68%)] blur-2xl" from={30} to={-70} />
       <Drift className="pointer-events-none absolute right-[-8%] bottom-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.09),transparent_68%)] blur-2xl" from={16} to={-48} />
 
       <div className="shell relative grid items-center gap-6 pt-[4.75rem] pb-8 sm:pt-28 lg:min-h-[100svh] lg:grid-cols-12 lg:gap-8 lg:pt-28 lg:pb-16">
         <div className="relative z-10 lg:col-span-7">
           <motion.p
-            className="eyebrow text-brand"
+            className="eyebrow text-white/60"
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={reduced ? { duration: 0.15 } : { duration: 0.5, delay: 0.12, ease: EASE }}
@@ -84,7 +84,7 @@ export function Hero() {
                 </Word>
               ))}
             </span>
-            <span className="relative mt-1 inline-block text-brand">
+            <span className="relative mt-1 inline-block text-white">
               {accent.map((word, index) => (
                 <Word key={word} index={headline.length + index} reduced={reduced}>
                   {word}
@@ -92,7 +92,7 @@ export function Hero() {
               ))}
               <motion.span
                 aria-hidden="true"
-                className="absolute right-0 -bottom-1 left-0 h-[3px] origin-left rounded-full bg-brand"
+                className="absolute right-0 -bottom-1 left-0 h-[4px] origin-left rounded-full bg-brand"
                 initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={reduced ? { duration: 0.15 } : { duration: 0.45, delay: 0.95, ease: EASE }}
@@ -127,8 +127,8 @@ export function Hero() {
               className="h-11 rounded-full border-white/20 bg-white/10 px-5 text-white backdrop-blur-xl hover:bg-white/16 hover:text-white sm:h-12"
             >
               <a href="#demo">
-                Hear it in action
-                <Play className="size-3.5 fill-current" strokeWidth={1.5} aria-hidden="true" />
+                Talk to Sophie
+                <Mic className="size-3.5" strokeWidth={1.75} aria-hidden="true" />
               </a>
             </Button>
           </motion.div>
@@ -157,18 +157,18 @@ export function Hero() {
             >
               <div
                 aria-hidden="true"
-                className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgba(255,255,255,0.85),rgba(198,244,50,0.75)_28%,rgba(198,244,50,0.35)_52%,rgba(255,255,255,0.225)_78%,transparent_80%)] blur-2xl"
+                className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgba(255,255,255,0.85),rgba(255,255,255,0.338)_28%,rgba(255,255,255,0.158)_52%,rgba(255,255,255,0.225)_78%,transparent_80%)] blur-2xl"
                 style={breathing && !reduced ? { animation: "breathe 5.5s ease-in-out infinite" } : undefined}
               />
               <div
                 aria-hidden="true"
-                className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(198,244,50,0.95)_36%,rgba(11,11,12,0.2)_70%,rgba(255,255,255,0.275))] shadow-[0_30px_80px_-20px_rgba(198,244,50,0.45)]"
+                className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(255,255,255,0.427)_36%,rgba(11,11,12,0.2)_70%,rgba(255,255,255,0.275))] shadow-[0_30px_80px_-20px_rgba(255,255,255,0.203)]"
                 style={breathing && !reduced ? { animation: "breathe 5.5s ease-in-out infinite" } : undefined}
               />
               {!reduced ? (
                 <motion.div
                   aria-hidden="true"
-                  className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(198,244,50,0.8))] blur-xl"
+                  className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(255,255,255,0.36))] blur-xl"
                   initial={{ opacity: 0.85 }}
                   animate={{ opacity: 0 }}
                   transition={{ duration: 1.15, ease: EASE }}
@@ -189,14 +189,14 @@ export function Hero() {
               <div className="mb-3 flex items-center justify-between gap-3">
                 <span className="inline-flex items-center gap-2 rounded-full bg-black/30 px-2.5 py-1 font-mono text-[11px] text-white">
                   <span
-                    className="size-1.5 rounded-full bg-brand"
+                    className="size-1.5 rounded-full bg-white"
                     style={reduced ? undefined : { animation: "live-dot 1.6s ease-in-out infinite" }}
                   />
                   Live · 11:47 PM
                 </span>
                 <span className="font-mono text-[11px] text-white/60">{captions[caption]?.who}</span>
               </div>
-              <div className="text-brand">
+              <div className="text-white">
                 <SpeechWave count={42} active={orbInView && !reduced} />
               </div>
               <div className="mt-3 min-h-[4.5rem]">

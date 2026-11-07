@@ -21,7 +21,7 @@ export function Wordmark({
         {[0.5, 0.85, 1, 0.62].map((height, index) => (
           <span
             key={height}
-            className="wave-bar w-[2.5px] rounded-full bg-brand"
+            className="wave-bar w-[2.5px] rounded-full bg-current"
             style={{
               height: `${height * 16}px`,
               animationDelay: `${index * 0.12}s`,

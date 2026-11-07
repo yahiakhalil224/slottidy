@@ -59,8 +59,8 @@ function Incoming({ active }: { active: boolean }) {
       <div className="relative mt-8 grid size-24 place-items-center">
         {active ? (
           <>
-            <span className="absolute inset-0 rounded-full border border-brand/50" style={{ animation: "ring-pulse 1.8s ease-out infinite" }} />
-            <span className="absolute inset-0 rounded-full border border-brand/40" style={{ animation: "ring-pulse 1.8s ease-out 0.6s infinite" }} />
+            <span className="absolute inset-0 rounded-full border border-white/30" style={{ animation: "ring-pulse 1.8s ease-out infinite" }} />
+            <span className="absolute inset-0 rounded-full border border-white/20" style={{ animation: "ring-pulse 1.8s ease-out 0.6s infinite" }} />
           </>
         ) : null}
         <span className="relative grid size-16 place-items-center rounded-full bg-brand text-ink">
@@ -74,10 +74,10 @@ function Incoming({ active }: { active: boolean }) {
 function Answering({ active }: { active: boolean }) {
   return (
     <ScreenShell>
-      <p className="font-mono text-[10px] tracking-[0.16em] text-brand">ON THE CALL</p>
+      <p className="font-mono text-[10px] tracking-[0.16em] text-white/60">ON THE CALL</p>
       <p className="mt-3 font-heading text-lg tracking-[-0.03em]">Brightside Dental</p>
       <p className="text-sm text-white/60">Virtual assistant</p>
-      <div className="mt-8 text-brand">
+      <div className="mt-8 text-white">
         <SpeechWave count={28} active={active} className="h-16" />
       </div>
       <p className="mt-6 text-sm leading-relaxed text-white/80">
@@ -99,7 +99,7 @@ function Booked({ active }: { active: boolean }) {
             key={day}
             className={cn(
               "rounded-xl px-1 py-2 text-center",
-              day === "Thu" ? "bg-brand text-ink" : "bg-white/6 text-white/70",
+              day === "Thu" ? "bg-white text-ink" : "bg-white/6 text-white/70",
             )}
           >
             <p className="font-mono text-[9px] tracking-wide">{day}</p>
@@ -113,7 +113,7 @@ function Booked({ active }: { active: boolean }) {
         transition={{ duration: 0.45, ease: EASE }}
         className="mt-5 rounded-2xl bg-white/8 px-3 py-3"
       >
-        <p className="text-sm text-brand">Booked: Thu 2:40 pm</p>
+        <p className="text-sm text-white">Booked: Thu 2:40 pm</p>
         <p className="mt-1 text-xs text-white/55">Dr Patel · check-up</p>
       </motion.div>
     </ScreenShell>
@@ -145,8 +145,8 @@ function Arrived({ active }: { active: boolean }) {
     <ScreenShell className="items-center justify-center text-center">
       <div
         className={cn(
-          "grid size-20 place-items-center rounded-full bg-brand/15 text-brand",
-          active && "shadow-[0_0_40px_rgba(198,244,50,0.35)]",
+          "grid size-20 place-items-center rounded-full bg-white/10 text-white",
+          active && "shadow-[0_0_40px_rgba(255,255,255,0.158)]",
         )}
       >
         <span className="font-heading text-3xl">✓</span>

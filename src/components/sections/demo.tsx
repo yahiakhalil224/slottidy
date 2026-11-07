@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { RetellWebClient } from "retell-client-js-sdk"
+import { AgentPreview } from "@/components/agent-preview"
 import { GlassCard } from "@/components/glass-card"
 import { Magnetic } from "@/components/magnetic"
 import { Reveal } from "@/components/reveal"
@@ -203,13 +204,13 @@ function SophieCall() {
               disabled={status === "connecting"}
               aria-describedby="sophie-demo-note"
               aria-busy={status === "connecting"}
-              className="h-auto min-h-12 w-full whitespace-normal rounded-full bg-ink px-6 py-3 text-center text-[15px] font-medium tracking-[-0.01em] text-white shadow-none hover:bg-ink/90 sm:w-auto"
+              className="h-auto min-h-12 w-full whitespace-normal rounded-full bg-brand px-6 py-3 text-center text-[15px] font-medium tracking-[-0.01em] text-ink shadow-none hover:bg-brand/85 sm:w-auto"
             >
               {status === "connecting" ? "Connecting…" : "Talk to Sophie, our AI receptionist"}
               {status === "connecting" ? null : (
                 <span
                   aria-hidden="true"
-                  className="ml-1 size-2 shrink-0 rounded-full bg-brand transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:scale-150"
+                  className="ml-1 size-2 shrink-0 rounded-full bg-ink transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:scale-150"
                 />
               )}
             </Button>
@@ -222,7 +223,7 @@ function SophieCall() {
               key={`${height}-${index}`}
               className={cn(
                 "w-[3px] flex-1 origin-bottom rounded-full",
-                live ? "bg-brand wave-bar" : "bg-ink/15",
+                live ? "bg-ink wave-bar" : "bg-ink/15",
               )}
               style={{
                 height: `${Math.max(12, height * 100)}%`,
@@ -240,7 +241,7 @@ function SophieCall() {
           {live ? (
             <span className="inline-flex items-center gap-2 sm:justify-end">
               <span
-                className="size-1.5 rounded-full bg-brand"
+                className="size-1.5 rounded-full bg-ink"
                 style={reduced ? undefined : { animation: "live-dot 1.6s ease-in-out infinite" }}
               />
               Live
@@ -275,12 +276,16 @@ export default function Demo() {
             eyebrow="Demo"
             id="demo-title"
             title="Don't take our word for it. Listen."
-            intro="Talk to Sophie, or read a sample call for a fictional dental clinic. It's not a real patient, just an example of how your AI receptionist could sound."
+            intro="Talk to Sophie live, or type in your own business and hear how your receptionist would answer. The sample calls use fictional patients."
           />
         </Reveal>
 
         <Reveal className="mt-10">
           <SophieCall />
+        </Reveal>
+
+        <Reveal className="mt-6">
+          <AgentPreview />
         </Reveal>
 
         <ol className="mt-8 space-y-3" aria-label="Sample transcript">

@@ -33,16 +33,14 @@
   --font-heading: "Geist", "Satoshi", "Inter Tight", sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
-  /* Palette: midnight black #0b0b0c + pure white #ffffff, lime #c6f432 as the accent. */
+  /* Palette: midnight black #0b0b0c + pure white #ffffff. Lime #c6f432 is reserved for buttons and the accent streak. */
   --color-canvas: #ffffff;
   --color-ink: #0b0b0c;
   --color-muted-ink: #5c5c60;
   --color-brand: #c6f432;
-  --color-brand-deep: #c6f432;
-  /* Lime on white is ~1.2:1, so small accent text on light surfaces uses midnight black.
-     Lime stays for buttons, fills, glows and text on midnight-black sections. */
+  --color-brand-deep: #b2dc2d;
   --color-brand-text: #0b0b0c;
-  --color-glow: #c6f432;
+  --color-glow: #ffffff;
   --color-hairline: rgba(11, 11, 12, 0.08);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -171,8 +169,8 @@
   }
 
   ::selection {
-    background: #c6f432;
-    color: #0b0b0c;
+    background: #0b0b0c;
+    color: #ffffff;
   }
 
   :focus-visible {

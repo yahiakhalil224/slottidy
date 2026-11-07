@@ -18,7 +18,7 @@ type Cta =
 export function BookCall({
   cta,
   children,
-  tone = "ink",
+  tone: _tone = "ink",
   className,
 }: {
   cta: Cta
@@ -31,11 +31,8 @@ export function BookCall({
       <Button
         asChild
         className={cn(
-          "h-12 rounded-full px-6 text-[15px] font-medium tracking-[-0.01em]",
+          "h-12 rounded-full px-6 text-[15px] font-medium tracking-[-0.01em] shadow-none",
           "bg-brand text-ink hover:bg-brand/85",
-          tone === "ink"
-            ? "shadow-[0_10px_30px_-12px_rgba(11,11,12,0.35)]"
-            : "shadow-[0_0_40px_-8px_rgba(198,244,50,0.55)]",
           className,
         )}
       >
