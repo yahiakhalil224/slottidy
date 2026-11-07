@@ -4,6 +4,7 @@ import { Mic } from "lucide-react"
 import { BookCall } from "@/components/book-call"
 import { LimeStreaks } from "@/components/lime-streaks"
 import { SpeechWave } from "@/components/speech-wave"
+import { VoiceCore } from "@/components/voice-core"
 import { Button } from "@/components/ui/button"
 import { site } from "@/config/site"
 import { EASE, useInView, useReducedMotion } from "@/lib/motion"
@@ -24,7 +25,6 @@ export function Hero() {
   const reduced = useReducedMotion()
   const [setOrb, orbInView] = useInView<HTMLDivElement>("0px")
   const [caption, setCaption] = useState(0)
-  const [breathing, setBreathing] = useState(false)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
   const springX = useSpring(x, { stiffness: 50, damping: 18 })
@@ -149,35 +149,17 @@ export function Hero() {
         <div ref={setOrb} className="relative z-10 lg:col-span-5">
           <motion.div
             style={reduced ? undefined : { x: springX, y: springY }}
-            className="relative mx-auto h-[240px] w-full max-w-[460px] sm:h-[300px] lg:h-[460px]"
+            className="relative mx-auto h-[430px] w-full max-w-[460px] sm:h-[470px] lg:h-[540px]"
           >
-            <motion.div
-              className="absolute inset-[8%] rounded-full"
-              initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={reduced ? { duration: 0.15 } : { duration: 1.15, ease: EASE }}
-              onAnimationComplete={() => setBreathing(true)}
-            >
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgba(255,255,255,0.85),rgba(255,255,255,0.338)_28%,rgba(255,255,255,0.158)_52%,rgba(255,255,255,0.225)_78%,transparent_80%)] blur-2xl"
-                style={breathing && !reduced ? { animation: "breathe 5.5s ease-in-out infinite" } : undefined}
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(255,255,255,0.427)_36%,rgba(11,11,12,0.2)_70%,rgba(255,255,255,0.275))] shadow-[0_30px_80px_-20px_rgba(255,255,255,0.203)]"
-                style={breathing && !reduced ? { animation: "breathe 5.5s ease-in-out infinite" } : undefined}
-              />
-              {!reduced ? (
-                <motion.div
-                  aria-hidden="true"
-                  className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(255,255,255,0.36))] blur-xl"
-                  initial={{ opacity: 0.85 }}
-                  animate={{ opacity: 0 }}
-                  transition={{ duration: 1.15, ease: EASE }}
-                />
-              ) : null}
-            </motion.div>
+            <div className="absolute top-0 left-1/2 w-[230px] -translate-x-1/2 sm:w-[270px] lg:w-[360px]">
+              <motion.div
+                initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85, rotate: -20 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={reduced ? { duration: 0.15 } : { duration: 1.2, ease: EASE }}
+              >
+                <VoiceCore active={orbInView && !reduced} />
+              </motion.div>
+            </div>
 
             <Drift className="absolute top-2 left-0 hidden rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/90 backdrop-blur-xl sm:inline-flex" from={18} to={-28}>
               After hours
@@ -185,7 +167,7 @@ export function Hero() {
             <Drift className="absolute top-8 right-0 hidden rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/90 backdrop-blur-xl md:inline-flex" from={28} to={-46}>
               Books the visit
             </Drift>
-            <Drift className="absolute bottom-40 left-2 hidden rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/90 backdrop-blur-xl lg:inline-flex" from={10} to={-22}>
+            <Drift className="absolute top-[50%] right-[-3%] hidden rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/90 backdrop-blur-xl lg:inline-flex" from={10} to={-22}>
               Sends a reminder
             </Drift>
             <div className="absolute inset-x-6 bottom-2 rounded-[24px] border border-white/10 bg-white/10 p-4 backdrop-blur-xl sm:inset-x-4 sm:bottom-4">

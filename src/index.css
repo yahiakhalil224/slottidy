@@ -256,8 +256,46 @@
     animation: wave 1.6s ease-in-out infinite;
   }
 
-  .lime-streaks {
-    animation: streak-shimmer 6s ease-in-out infinite;
+  /* Lime streak motion */
+  .streak-glow {
+    transform: translateX(-50%);
+    animation: streak-glow 7s ease-in-out infinite;
+  }
+
+  .streak-sway {
+    transform: translateX(-50%);
+    animation: streak-sway 14s ease-in-out infinite;
+  }
+
+  .streak-sweep {
+    animation: streak-sweep 9s ease-in-out infinite;
+  }
+
+  .streak-beam {
+    opacity: 0;
+    transform: translateY(100%);
+    animation-name: streak-beam;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-iteration-count: infinite;
+  }
+
+  /* Hero voice visual */
+  .voice-orbit {
+    animation: spin 9s linear infinite;
+  }
+
+  .voice-orbit-reverse {
+    animation: spin 40s linear infinite reverse;
+  }
+
+  .voice-ripple {
+    opacity: 0;
+    animation: voice-ripple 3.9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+
+  .voice-logo-bar {
+    transform-origin: center;
+    animation: voice-logo 1.4s ease-in-out infinite;
   }
 
   .marquee-track {
@@ -280,13 +318,81 @@
   }
 }
 
-@keyframes streak-shimmer {
+@keyframes streak-glow {
   0%,
   100% {
-    opacity: 0.85;
+    opacity: 0.8;
+    transform: translateX(-50%) scale(1);
   }
   50% {
     opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+  }
+}
+
+@keyframes streak-sway {
+  0%,
+  100% {
+    transform: translateX(calc(-50% - 22px));
+  }
+  50% {
+    transform: translateX(calc(-50% + 22px));
+  }
+}
+
+@keyframes streak-sweep {
+  0%,
+  100% {
+    transform: translateX(-32%);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(32%);
+    opacity: 1;
+  }
+}
+
+@keyframes streak-beam {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-80%);
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes voice-ripple {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+@keyframes voice-logo {
+  0%,
+  100% {
+    transform: scaleY(0.55);
+  }
+  50% {
+    transform: scaleY(1);
   }
 }
 
@@ -343,9 +449,25 @@
   }
 
   .wave-bar,
-  .lime-streaks,
+  .streak-sweep,
+  .streak-beam,
+  .voice-orbit,
+  .voice-orbit-reverse,
+  .voice-ripple,
+  .voice-logo-bar,
   .marquee-track {
     animation: none !important;
+  }
+
+  .streak-beam,
+  .voice-ripple {
+    display: none;
+  }
+
+  .streak-glow,
+  .streak-sway {
+    animation: none !important;
+    transform: translateX(-50%);
   }
 
   .glass-card[data-lift="true"]:hover {
