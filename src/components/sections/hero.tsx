@@ -57,8 +57,8 @@ export function Hero() {
         y.set(0)
       }}
     >
-      <Drift className="pointer-events-none absolute -top-24 -left-16 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(0,209,160,0.2),transparent_68%)] blur-2xl" from={30} to={-70} />
-      <Drift className="pointer-events-none absolute right-[-8%] bottom-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(124,92,255,0.18),transparent_68%)] blur-2xl" from={16} to={-48} />
+      <Drift className="pointer-events-none absolute -top-24 -left-16 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(198,244,50,0.2),transparent_68%)] blur-2xl" from={30} to={-70} />
+      <Drift className="pointer-events-none absolute right-[-8%] bottom-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.09),transparent_68%)] blur-2xl" from={16} to={-48} />
 
       <div className="shell relative grid items-center gap-6 pt-[4.75rem] pb-8 sm:pt-28 lg:min-h-[100svh] lg:grid-cols-12 lg:gap-8 lg:pt-28 lg:pb-16">
         <div className="relative z-10 lg:col-span-7">
@@ -157,18 +157,18 @@ export function Hero() {
             >
               <div
                 aria-hidden="true"
-                className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgba(255,255,255,0.85),rgba(0,209,160,0.75)_28%,rgba(0,168,132,0.35)_52%,rgba(124,92,255,0.45)_78%,transparent_80%)] blur-2xl"
+                className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgba(255,255,255,0.85),rgba(198,244,50,0.75)_28%,rgba(198,244,50,0.35)_52%,rgba(255,255,255,0.225)_78%,transparent_80%)] blur-2xl"
                 style={breathing && !reduced ? { animation: "breathe 5.5s ease-in-out infinite" } : undefined}
               />
               <div
                 aria-hidden="true"
-                className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#f4fffb,rgba(0,209,160,0.95)_36%,rgba(11,11,15,0.2)_70%,rgba(124,92,255,0.55))] shadow-[0_30px_80px_-20px_rgba(0,209,160,0.45)]"
+                className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(198,244,50,0.95)_36%,rgba(11,11,12,0.2)_70%,rgba(255,255,255,0.275))] shadow-[0_30px_80px_-20px_rgba(198,244,50,0.45)]"
                 style={breathing && !reduced ? { animation: "breathe 5.5s ease-in-out infinite" } : undefined}
               />
               {!reduced ? (
                 <motion.div
                   aria-hidden="true"
-                  className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(0,209,160,0.8))] blur-xl"
+                  className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle_at_32%_28%,#ffffff,rgba(198,244,50,0.8))] blur-xl"
                   initial={{ opacity: 0.85 }}
                   animate={{ opacity: 0 }}
                   transition={{ duration: 1.15, ease: EASE }}

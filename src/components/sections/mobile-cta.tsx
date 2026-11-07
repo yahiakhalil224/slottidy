@@ -61,7 +61,7 @@ export function MobileCta() {
         target="_blank"
         rel="noopener noreferrer"
         data-cta="mobile"
-        className="flex h-12 items-center justify-center rounded-full border border-hairline bg-white/75 text-sm font-medium text-ink shadow-[0_20px_60px_-20px_rgba(11,11,15,0.25)] backdrop-blur-xl"
+        className="flex h-12 items-center justify-center rounded-full border border-hairline bg-white/75 text-sm font-medium text-ink shadow-[0_20px_60px_-20px_rgba(11,11,12,0.25)] backdrop-blur-xl"
       >
         Book a Free Call
         <span aria-hidden="true" className="ml-2 size-2 rounded-full bg-brand" />

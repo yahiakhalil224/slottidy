@@ -115,7 +115,7 @@ export default function Calculator() {
             </div>
 
             <div className="mt-8 border-t border-hairline pt-6">
-              <p className="font-heading text-[clamp(2.4rem,5vw,4rem)] leading-none tracking-[-0.04em] text-brand-text tabular-nums" aria-hidden="true">
+              <p className="font-heading text-[clamp(2.4rem,5vw,4rem)] leading-none tracking-[-0.04em] text-ink tabular-nums underline decoration-brand decoration-[6px] underline-offset-[10px]" aria-hidden="true">
                 ≈ {formatMoney(reduced ? monthly : shown, currency)}
                 <span className="ml-2 font-sans text-lg font-medium tracking-normal text-muted-ink">/ month</span>
               </p>
