@@ -53,7 +53,7 @@ export function Nav() {
           "mx-auto flex h-14 w-full max-w-[1200px] items-center justify-between gap-3 px-3 transition-[background,box-shadow,border-color] duration-300 sm:px-4",
           light
             ? "border border-transparent bg-transparent"
-            : "rounded-full border border-hairline bg-white/70 shadow-[0_20px_60px_-20px_rgba(11,11,15,0.15)] backdrop-blur-xl",
+            : "rounded-full border border-hairline bg-white/70 shadow-[0_20px_60px_-20px_rgba(11,11,12,0.15)] backdrop-blur-xl",
         )}
       >
         <a href={hrefFor(pathname, "#hero")} className="shrink-0 rounded-full" aria-label={site.brand}>

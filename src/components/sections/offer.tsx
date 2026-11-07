@@ -73,7 +73,9 @@ export default function Offer() {
           {features.map((feature) => (
             <RevealItem key={feature.title} className={feature.className}>
               <GlassCard className="h-full p-6 sm:p-7">
-                <feature.icon strokeWidth={1.5} className="size-5 text-brand-text" aria-hidden="true" />
+                <span className="grid size-10 place-items-center rounded-full bg-brand text-ink">
+                  <feature.icon strokeWidth={1.5} className="size-5" aria-hidden="true" />
+                </span>
                 <h3 className="mt-5 text-[1.35rem] tracking-[-0.03em] text-ink">{feature.title}</h3>
                 <p className="mt-3 max-w-xl text-muted-ink">{feature.body}</p>
               </GlassCard>

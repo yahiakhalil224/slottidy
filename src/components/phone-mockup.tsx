@@ -14,10 +14,10 @@ export function PhoneFrame({
   return (
     <div className={cn("relative mx-auto w-[250px] max-w-full", className)}>
       <div
-        className="relative aspect-[9/19.2] rounded-[2.15rem] bg-[#07080c] p-[9px] shadow-[0_40px_80px_-36px_rgba(11,11,15,0.65)] ring-1 ring-white/15"
+        className="relative aspect-[9/19.2] rounded-[2.15rem] bg-[#0B0B0C] p-[9px] shadow-[0_40px_80px_-36px_rgba(11,11,12,0.65)] ring-1 ring-white/15"
         aria-hidden="true"
       >
-        <div className="relative h-full overflow-hidden rounded-[1.65rem] bg-[#101218]">
+        <div className="relative h-full overflow-hidden rounded-[1.65rem] bg-[#141415]">
           <div className="absolute top-2 left-1/2 z-10 h-[18px] w-[88px] -translate-x-1/2 rounded-full bg-black" />
           {children}
         </div>
@@ -146,7 +146,7 @@ function Arrived({ active }: { active: boolean }) {
       <div
         className={cn(
           "grid size-20 place-items-center rounded-full bg-brand/15 text-brand",
-          active && "shadow-[0_0_40px_rgba(0,209,160,0.35)]",
+          active && "shadow-[0_0_40px_rgba(198,244,50,0.35)]",
         )}
       >
         <span className="font-heading text-3xl">✓</span>

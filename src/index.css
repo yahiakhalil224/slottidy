@@ -33,15 +33,17 @@
   --font-heading: "Geist", "Satoshi", "Inter Tight", sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
-  --color-canvas: #f7f7f5;
-  --color-ink: #0b0b0f;
-  --color-muted-ink: #5b5f6b;
-  --color-brand: #00d1a0;
-  --color-brand-deep: #00a884;
-  /* #00A884 on #F7F7F5 measures 2.82:1. Small accent text uses this same-hue green at 4.59:1. */
-  --color-brand-text: #008062;
-  --color-glow: #7c5cff;
-  --color-hairline: rgba(11, 11, 15, 0.08);
+  /* Palette: midnight black #0b0b0c + pure white #ffffff, lime #c6f432 as the accent. */
+  --color-canvas: #ffffff;
+  --color-ink: #0b0b0c;
+  --color-muted-ink: #5c5c60;
+  --color-brand: #c6f432;
+  --color-brand-deep: #c6f432;
+  /* Lime on white is ~1.2:1, so small accent text on light surfaces uses midnight black.
+     Lime stays for buttons, fills, glows and text on midnight-black sections. */
+  --color-brand-text: #0b0b0c;
+  --color-glow: #c6f432;
+  --color-hairline: rgba(11, 11, 12, 0.08);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -83,38 +85,38 @@
 }
 
 :root {
-  --background: #f7f7f5;
-  --foreground: #0b0b0f;
+  --background: #ffffff;
+  --foreground: #0b0b0c;
   --card: rgba(255, 255, 255, 0.7);
-  --card-foreground: #0b0b0f;
+  --card-foreground: #0b0b0c;
   --popover: #ffffff;
-  --popover-foreground: #0b0b0f;
-  --primary: #0b0b0f;
-  --primary-foreground: #ffffff;
+  --popover-foreground: #0b0b0c;
+  --primary: #c6f432;
+  --primary-foreground: #0b0b0c;
   --secondary: rgba(255, 255, 255, 0.7);
-  --secondary-foreground: #0b0b0f;
-  --muted: #efefec;
-  --muted-foreground: #5b5f6b;
-  --accent: #efefec;
-  --accent-foreground: #0b0b0f;
+  --secondary-foreground: #0b0b0c;
+  --muted: #f3f3f3;
+  --muted-foreground: #5c5c60;
+  --accent: #f3f3f3;
+  --accent-foreground: #0b0b0c;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(11, 11, 15, 0.08);
-  --input: rgba(11, 11, 15, 0.12);
-  --ring: #008062;
-  --chart-1: #00d1a0;
-  --chart-2: #00a884;
-  --chart-3: #5b5f6b;
-  --chart-4: #0b0b0f;
-  --chart-5: #7c5cff;
+  --border: rgba(11, 11, 12, 0.08);
+  --input: rgba(11, 11, 12, 0.12);
+  --ring: #0b0b0c;
+  --chart-1: #c6f432;
+  --chart-2: #0b0b0c;
+  --chart-3: #5c5c60;
+  --chart-4: #d9d9d9;
+  --chart-5: #ffffff;
   --radius: 1.25rem;
-  --sidebar: #f7f7f5;
-  --sidebar-foreground: #0b0b0f;
-  --sidebar-primary: #0b0b0f;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0b0b0c;
+  --sidebar-primary: #0b0b0c;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #efefec;
-  --sidebar-accent-foreground: #0b0b0f;
-  --sidebar-border: rgba(11, 11, 15, 0.08);
-  --sidebar-ring: #008062;
+  --sidebar-accent: #f3f3f3;
+  --sidebar-accent-foreground: #0b0b0c;
+  --sidebar-border: rgba(11, 11, 12, 0.08);
+  --sidebar-ring: #0b0b0c;
   color-scheme: light;
 }
 
@@ -130,8 +132,8 @@
 
   body {
     margin: 0;
-    background: #f7f7f5;
-    color: #0b0b0f;
+    background: #ffffff;
+    color: #0b0b0c;
     font-size: 1rem;
     line-height: 1.6;
     text-rendering: optimizeLegibility;
@@ -169,13 +171,18 @@
   }
 
   ::selection {
-    background: rgba(0, 209, 160, 0.28);
-    color: #0b0b0f;
+    background: #c6f432;
+    color: #0b0b0c;
   }
 
   :focus-visible {
-    outline: 2px solid #008062;
+    outline: 2px solid #0b0b0c;
     outline-offset: 3px;
+  }
+
+  /* On midnight-black sections the focus ring switches to lime so it stays visible. */
+  .bg-ink :focus-visible {
+    outline-color: #c6f432;
   }
 
   section[id] {
@@ -221,10 +228,10 @@
     position: relative;
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(24px);
-    border: 1px solid rgba(11, 11, 15, 0.08);
+    border: 1px solid rgba(11, 11, 12, 0.08);
     border-radius: 24px;
     box-shadow:
-      0 20px 60px -20px rgba(11, 11, 15, 0.15),
+      0 20px 60px -20px rgba(11, 11, 12, 0.15),
       inset 0 1px 0 rgba(255, 255, 255, 0.85);
     transition:
       transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -234,7 +241,7 @@
   .glass-card[data-lift="true"]:hover {
     transform: translateY(-4px);
     box-shadow:
-      0 30px 70px -24px rgba(11, 11, 15, 0.28),
+      0 30px 70px -24px rgba(11, 11, 12, 0.28),
       inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 

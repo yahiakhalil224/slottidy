@@ -31,10 +31,11 @@ export function BookCall({
       <Button
         asChild
         className={cn(
-          "h-12 rounded-full px-6 text-[15px] font-medium tracking-[-0.01em] shadow-none",
+          "h-12 rounded-full px-6 text-[15px] font-medium tracking-[-0.01em]",
+          "bg-brand text-ink hover:bg-brand/85",
           tone === "ink"
-            ? "bg-ink text-white hover:bg-ink/90"
-            : "bg-white text-ink hover:bg-white/90",
+            ? "shadow-[0_10px_30px_-12px_rgba(11,11,12,0.35)]"
+            : "shadow-[0_0_40px_-8px_rgba(198,244,50,0.55)]",
           className,
         )}
       >
@@ -42,7 +43,7 @@ export function BookCall({
           {children}
           <span
             aria-hidden="true"
-            className="ml-1 size-2 rounded-full bg-brand transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:scale-150"
+            className="ml-1 size-2 rounded-full bg-ink transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:scale-150"
           />
         </a>
       </Button>
