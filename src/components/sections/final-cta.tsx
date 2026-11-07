@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef } from "react"
 import { BookCall } from "@/components/book-call"
+import { LimeStreaks } from "@/components/lime-streaks"
 import { useReducedMotion } from "@/lib/motion"
 
 export default function FinalCta() {
@@ -34,6 +35,8 @@ export default function FinalCta() {
         aria-hidden="true"
         className="pointer-events-none absolute top-1/2 left-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.158),transparent_70%)] blur-3xl"
       />
+
+      <LimeStreaks />
 
       <div className="shell relative text-center">
         <h2 id="final-title" className="mx-auto max-w-4xl text-balance text-white">

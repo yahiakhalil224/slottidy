@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion"
 import { Mic } from "lucide-react"
 import { BookCall } from "@/components/book-call"
+import { LimeStreaks } from "@/components/lime-streaks"
 import { SpeechWave } from "@/components/speech-wave"
 import { Button } from "@/components/ui/button"
 import { site } from "@/config/site"
@@ -59,6 +60,8 @@ export function Hero() {
     >
       <Drift className="pointer-events-none absolute -top-24 -left-16 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.09),transparent_68%)] blur-2xl" from={30} to={-70} />
       <Drift className="pointer-events-none absolute right-[-8%] bottom-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.09),transparent_68%)] blur-2xl" from={16} to={-48} />
+
+      <LimeStreaks className="h-[50%]" />
 
       <div className="shell relative grid items-center gap-6 pt-[4.75rem] pb-8 sm:pt-28 lg:min-h-[100svh] lg:grid-cols-12 lg:gap-8 lg:pt-28 lg:pb-16">
         <div className="relative z-10 lg:col-span-7">

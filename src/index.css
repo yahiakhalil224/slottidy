@@ -256,6 +256,10 @@
     animation: wave 1.6s ease-in-out infinite;
   }
 
+  .lime-streaks {
+    animation: streak-shimmer 6s ease-in-out infinite;
+  }
+
   .marquee-track {
     animation: marquee 42s linear infinite;
   }
@@ -273,6 +277,16 @@
   }
   50% {
     transform: scaleY(1);
+  }
+}
+
+@keyframes streak-shimmer {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
   }
 }
 
@@ -329,6 +343,7 @@
   }
 
   .wave-bar,
+  .lime-streaks,
   .marquee-track {
     animation: none !important;
   }
