@@ -20,6 +20,24 @@ npm run build
 npm run preview
 ```
 
+## Lint
+
+```bash
+npm run lint
+```
+
+This runs `oxlint` over the project. Run it before opening a PR.
+
+## Environment variables
+
+- `RETELL_API_KEY`: server-side only, used by `api/create-web-call`. Set it in the Vercel project settings. Never commit it to the repo.
+
+Local development uses an untracked `.env` file. Values are never committed.
+
+## Deployment
+
+The site deploys via Vercel. Environment variables are configured in the Vercel dashboard. `vercel.json` rewrites all non-`api/` routes to `index.html`.
+
 ## Placeholders
 
 Replace these values in `src/config/site.ts`:
