@@ -20,6 +20,24 @@ npm run build
 npm run preview
 ```
 
+## Lint
+
+Run the linter before opening a pull request.
+
+```bash
+npm run lint
+```
+
+## Environment variables
+
+- `RETELL_API_KEY`: server-side only. Used by `api/create-web-call` to start the demo call. Set it in the Vercel project settings and never commit it to the repository.
+
+Do not commit a `.env` file.
+
+## Deployment
+
+Slotidy is deployed on Vercel. Pushes to `main` are deployed automatically. Environment variables are configured in the Vercel dashboard, not in the repo.
+
 ## Placeholders
 
 Replace these values in `src/config/site.ts`:
