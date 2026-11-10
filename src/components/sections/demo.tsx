@@ -76,20 +76,27 @@ async function ensureMicrophone() {
   for (const track of stream.getTracks()) track.stop()
 }
 
-async function fetchAccessToken() {
+type WebCallConnection = {
+  accessToken: string
+  callId?: string
+  transport?: "gateway" | "livekit"
+  iceServers?: RTCIceServer[]
+}
+
+async function fetchConnection(): Promise<WebCallConnection> {
   const response = await fetch("/api/create-web-call", { method: "POST" })
   const payload: unknown = await response.json().catch(() => null)
-  const token =
-    typeof payload === "object" &&
-    payload !== null &&
-    "access_token" in payload &&
-    typeof payload.access_token === "string"
-      ? payload.access_token
-      : ""
+  const record = typeof payload === "object" && payload !== null ? (payload as Record<string, unknown>) : {}
+  const token = typeof record.access_token === "string" ? record.access_token : ""
   if (!response.ok || token.length === 0) {
     throw new Error("unavailable")
   }
-  return token
+  return {
+    accessToken: token,
+    callId: typeof record.call_id === "string" ? record.call_id : undefined,
+    transport: record.transport === "gateway" || record.transport === "livekit" ? record.transport : undefined,
+    iceServers: Array.isArray(record.ice_servers) ? (record.ice_servers as RTCIceServer[]) : undefined,
+  }
 }
 
 function statusLabel(status: CallStatus, error: string | null) {
@@ -154,9 +161,9 @@ function SophieCall() {
     try {
       await ensureMicrophone()
       if (generation.current !== id) return
-      const accessToken = await fetchAccessToken()
+      const connection = await fetchConnection()
       if (generation.current !== id) return
-      await client.startCall({ accessToken })
+      await client.startCall(connection)
       if (generation.current !== id) {
         client.stopCall()
         return

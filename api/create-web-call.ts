@@ -1,7 +1,8 @@
 // Creates a Retell web call for the "Talk to Sophie" demo and returns a short-lived
 // access token to the browser. The Retell API key stays on the server.
 
-const RETELL_WEB_CALL_URL = "https://api.retellai.com/v2/create-web-call"
+// v2 was retired by Retell on 2026-09-30; v3 also returns the browser connection details.
+const RETELL_WEB_CALL_URL = "https://api.retellai.com/v3/create-web-call"
 const DEFAULT_AGENT_ID = "agent_732fbc2465a3c7d967ba49b99d"
 
 function json(body: unknown, status = 200) {
@@ -12,6 +13,17 @@ function accessTokenFrom(payload: unknown) {
   if (typeof payload !== "object" || payload === null || !("access_token" in payload)) return ""
   const token = payload.access_token
   return typeof token === "string" ? token : ""
+}
+
+// Only the fields the browser needs to join the call.
+function connectionFrom(payload: unknown) {
+  const record = typeof payload === "object" && payload !== null ? (payload as Record<string, unknown>) : {}
+  return {
+    access_token: accessTokenFrom(payload),
+    call_id: typeof record.call_id === "string" ? record.call_id : undefined,
+    transport: typeof record.transport === "string" ? record.transport : undefined,
+    ice_servers: Array.isArray(record.ice_servers) ? record.ice_servers : undefined,
+  }
 }
 
 function config() {
@@ -67,7 +79,7 @@ export async function POST() {
       return json({ error: "unavailable", reason: "retell_error", status: upstream.status }, 502)
     }
 
-    return json({ access_token: accessToken })
+    return json(connectionFrom(payload))
   } catch (error) {
     console.error("[create-web-call] Request to Retell failed:", error instanceof Error ? error.message : error)
     return json({ error: "unavailable", reason: "network" }, 502)
