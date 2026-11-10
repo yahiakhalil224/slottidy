@@ -1,5 +1,12 @@
+// Creates a Retell web call for the "Talk to Sophie" demo and returns a short-lived
+// access token to the browser. The Retell API key stays on the server.
+
 const RETELL_WEB_CALL_URL = "https://api.retellai.com/v2/create-web-call"
-const RETELL_AGENT_ID = "agent_732fbc2465a3c7d967ba49b99d"
+const DEFAULT_AGENT_ID = "agent_732fbc2465a3c7d967ba49b99d"
+
+function json(body: unknown, status = 200) {
+  return Response.json(body, { status, headers: { "Cache-Control": "no-store" } })
+}
 
 function accessTokenFrom(payload: unknown) {
   if (typeof payload !== "object" || payload === null || !("access_token" in payload)) return ""
@@ -7,10 +14,24 @@ function accessTokenFrom(payload: unknown) {
   return typeof token === "string" ? token : ""
 }
 
+function config() {
+  return {
+    apiKey: process.env.RETELL_API_KEY?.trim() ?? "",
+    agentId: process.env.RETELL_AGENT_ID?.trim() || DEFAULT_AGENT_ID,
+  }
+}
+
+// Health check: says whether the demo is configured, without revealing any secret.
+export function GET() {
+  const { apiKey, agentId } = config()
+  return json({ configured: apiKey.length > 0, agentIdSource: process.env.RETELL_AGENT_ID ? "env" : "default", agentIdSuffix: agentId.slice(-6) })
+}
+
 export async function POST() {
-  const apiKey = process.env.RETELL_API_KEY?.trim()
+  const { apiKey, agentId } = config()
   if (!apiKey) {
-    return Response.json({ error: "unavailable" }, { status: 500 })
+    console.error("[create-web-call] RETELL_API_KEY is not set for this deployment")
+    return json({ error: "unavailable", reason: "not_configured" }, 500)
   }
 
   try {
@@ -20,20 +41,23 @@ export async function POST() {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ agent_id: RETELL_AGENT_ID }),
+      body: JSON.stringify({ agent_id: agentId }),
     })
 
     const payload: unknown = await upstream.json().catch(() => null)
     const accessToken = accessTokenFrom(payload)
     if (!upstream.ok || accessToken.length === 0) {
-      return Response.json({ error: "unavailable" }, { status: 502 })
+      const detail =
+        typeof payload === "object" && payload !== null
+          ? JSON.stringify(payload).slice(0, 300)
+          : String(payload)
+      console.error(`[create-web-call] Retell responded ${upstream.status}: ${detail}`)
+      return json({ error: "unavailable", reason: "retell_error", status: upstream.status }, 502)
     }
 
-    return Response.json(
-      { access_token: accessToken },
-      { headers: { "Cache-Control": "no-store" } },
-    )
-  } catch {
-    return Response.json({ error: "unavailable" }, { status: 502 })
+    return json({ access_token: accessToken })
+  } catch (error) {
+    console.error("[create-web-call] Request to Retell failed:", error instanceof Error ? error.message : error)
+    return json({ error: "unavailable", reason: "network" }, 502)
   }
 }
